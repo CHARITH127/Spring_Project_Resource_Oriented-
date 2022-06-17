@@ -1,0 +1,17 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="SpringMVS">
+    <output-path>$PROJECT_DIR$/out/artifacts/SpringMVS</output-path>
+    <root id="archive" name="SpringMVS.war">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Spring_MVC" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="spring-aop-5.3.9-javadoc1" />
+          <element id="library" level="project" name="jackson-annotations-2.13.3" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="Spring_MVC/web/Web" />
+    </root>
+  </artifact>
+</component>
