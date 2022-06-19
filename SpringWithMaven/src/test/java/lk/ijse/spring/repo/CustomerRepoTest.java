@@ -1,6 +1,7 @@
 package lk.ijse.spring.repo;
 
 import lk.ijse.spring.config.JPAConfig;
+import lk.ijse.spring.dto.CustomerDTO;
 import lk.ijse.spring.entity.Customer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,6 +57,11 @@ class CustomerRepoTest {
     @Test
     public void updateCustomer(){
         customerRepo.save(new Customer("C001", "Charith", 23000.00));
+    }
+
+    @Test
+    public void testDTO(){
+        CustomerDTO customerDTO = new CustomerDTO();
     }
 
 }

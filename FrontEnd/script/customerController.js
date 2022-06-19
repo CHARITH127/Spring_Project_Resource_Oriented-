@@ -4,7 +4,7 @@ function loadCustomer() {
         url: "http://localhost:8080/SpringWithMaven_war/customer",
         method: "GET",
         success: function (resp) {
-            for (const customer of resp) {
+            for (const customer of resp.data) {
                 let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
                 $(".customerTableBody").append(row);
             }
@@ -17,13 +17,13 @@ loadCustomer();
 $("#btn_AddCustomer").click(function () {
     var customerID = $("#CustomerID").val();
     var customerName = $("#CustomerName").val();
-    var customerAddress = $("#CustomerAddress").val();
+    /*var customerAddress = $("#CustomerAddress").val();*/
     var customerSalary = $("#CustomerSalary").val();
 
     let customer = {
         id: customerID,
         name: customerName,
-        address: customerAddress,
+        /*address: customerAddress,*/
         salary: customerSalary
     }
 
@@ -33,6 +33,7 @@ $("#btn_AddCustomer").click(function () {
         contentType: "application/json",
         data: JSON.stringify(customer),
         success:function (res) {
+            alert("Customer Add scuccessfully");
             /*if (res.status == 200) {
                 alert(res.message);
                 loadCustomer();
