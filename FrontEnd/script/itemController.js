@@ -1,11 +1,11 @@
 function loadAllItems() {
     $(".itemTableBody").empty();
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/item?option=GETALL",
+        url: "http://localhost:8080/SpringWithMaven_war/item",
         method: "GET",
         success: function (resp) {
-            for (const item of resp) {
-                let row = `<tr><td>${item.itemCode}</td><td>${item.itemName}</td><td>${item.itemQty}</td><td>${item.itemPrice}</td></tr>`;
+            for (const item of resp.data) {
+                let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.qtyOnHand}</td><td>${item.unitPrice}</td></tr>`;
                 $(".itemTableBody").append(row);
             }
         }
@@ -21,22 +21,22 @@ $("#btn_AddNewItem").click(function () {
     var itemPrice = $("#ItemPrice").val();
 
     let item = {
-        itemCode: itemCode,
-        itemName: itemName,
-        itemQty: itemQty,
-        itemPrice: itemPrice
+        code: itemCode,
+        name: itemName,
+        qtyOnHand: itemQty,
+        unitPrice: itemPrice
     }
 
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/item",
+        url: "http://localhost:8080/SpringWithMaven_war/item",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(item),
         success: function (res) {
-            if (res.status == 200) {
+            if (res.code == 200) {
                 alert(res.message);
                 loadAllItems();
-            } else if (res.status == 400) {
+            } else if (res.code == 400) {
                 alert(res.message);
             } else {
                 alert(res.data);
@@ -50,14 +50,14 @@ function searchItem() {
     let itemCode = $("#ItemSearch").val();
 
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/item?option=SEARCH&itemCode="+itemCode,
+        url: "http://localhost:8080/SpringWithMaven_war/item?id="+itemCode,
         method: "GET",
         success: function (resp) {
-            console.log(resp.itemCode + " " + resp.itemName + " " + resp.itemQty + " " + resp.itemPrice);
-            $("#searchItemCode").val(resp.itemCode);
-            $("#searchItemName").val(resp.itemName);
-            $("#searchItemQuantity").val(resp.itemQty);
-            $("#searchItemPrice").val(resp.itemPrice);
+            console.log(resp.data.code + " " + resp.data.name + " " + resp.data.qtyOnHand + " " +resp.data.unitPrice);
+            $("#searchItemCode").val(resp.data.code);
+            $("#searchItemName").val(resp.data.name);
+            $("#searchItemQuantity").val(resp.data.qtyOnHand);
+            $("#searchItemPrice").val(resp.data.unitPrice);
         }
     });
 }
@@ -70,13 +70,13 @@ $("#deleteItem").click(function () {
     searchItem()
     let itemCode = $("#ItemSearch").val();
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/item?itemCode=" + itemCode,
+        url: "http://localhost:8080/SpringWithMaven_war/item?id=" + itemCode,
         method: "DELETE",
         success: function (resp) {
-            if (resp.status == 200) {
+            if (resp.code == 200) {
                 alert(resp.message);
                 loadAllItems();
-            } else if (resp.status == 400) {
+            } else if (resp.code == 400) {
                 alert(resp.data);
             } else {
                 alert(resp.data);
@@ -95,22 +95,22 @@ $("#update").click(function () {
     let itemPrice = $("#searchItemPrice").val();
 
     let updateItem = {
-        itemCode: itemCode,
-        itemName: itemName,
-        itemQty: itemQty,
-        itemPrice: itemPrice
+        code: itemCode,
+        name: itemName,
+        qtyOnHand: itemQty,
+        unitPrice: itemPrice
     }
 
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/item",
+        url: "http://localhost:8080/SpringWithMaven_war/item",
         method: "PUT",
         contentType: "application/json",
         data: JSON.stringify(updateItem),
         success: function (resp) {
-            if (resp.status == 200) { // process is  ok
+            if (resp.code == 200) { // process is  ok
                 alert(resp.message);
                 loadAllItems();
-            } else if (resp.status == 400) { // there is a problem with the client side
+            } else if (resp.code == 400) { // there is a problem with the client side
                 alert(resp.message);
             } else {
                 alert(resp.data); // else maybe there is an exception
@@ -198,4 +198,3 @@ $("#ItemPrice").keydown(function (e) {
         }
     }
 });
-

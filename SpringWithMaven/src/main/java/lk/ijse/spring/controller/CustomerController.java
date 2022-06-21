@@ -40,6 +40,7 @@ public class CustomerController {
 
     @DeleteMapping(params = {"custID"})
     public ResponceUtil deleteCustomer(@RequestParam String custID){
+        customerService.deleteCustomer(custID);
         return new ResponceUtil(200,"Customer Deleted",null);
     }
 
