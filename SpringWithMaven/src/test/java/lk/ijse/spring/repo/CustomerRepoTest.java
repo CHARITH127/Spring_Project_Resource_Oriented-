@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,7 @@ import java.util.Optional;
 @WebAppConfiguration/*test clas*/
 @ContextConfiguration(classes = {JPAConfig.class})/*configure the enviromant of junit*/
 @ExtendWith(SpringExtension.class)
+@Transactional
 class CustomerRepoTest {
 
     @Autowired
@@ -25,9 +27,7 @@ class CustomerRepoTest {
     @Test
     public void saveCustomer() {
 
-        customerRepo.save(new Customer("C001", "Dasun", 23000.00));
-        customerRepo.save(new Customer("C002", "Amal", 13000.00));
-        customerRepo.save(new Customer("C003", "Kasun", 53000.00));
+        customerRepo.save(new Customer("C001", "Dasun","Gampaha", 23000.00));
     }
 
     @Test
@@ -56,12 +56,18 @@ class CustomerRepoTest {
 
     @Test
     public void updateCustomer(){
-        customerRepo.save(new Customer("C001", "Charith", 23000.00));
+        customerRepo.save(new Customer("C001", "Dasun","Gampaha", 23000.00));
     }
 
     @Test
     public void testDTO(){
         CustomerDTO customerDTO = new CustomerDTO();
+    }
+
+    @Test
+    public void searchCustomerByName(){
+        Customer charith = customerRepo.findCustomersByName("Charith");
+        System.out.println(charith);
     }
 
 }

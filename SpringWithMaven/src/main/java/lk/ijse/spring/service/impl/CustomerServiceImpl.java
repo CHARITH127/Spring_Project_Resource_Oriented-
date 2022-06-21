@@ -24,26 +24,46 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void saveCustomer(CustomerDTO customer){
-        repo.save(mapper.map(customer,Customer.class));
+        if (repo.existsById(customer.getId())) {
+            throw new RuntimeException("Customer is Already added");
+        }else {
+            repo.save(mapper.map(customer,Customer.class));
+        }
     }
+
     @Override
     public void deleteCustomer(String id){
-        repo.deleteById(id);
+        if (repo.existsById(id)) {
+            repo.deleteById(id);
+        }else {
+            throw  new RuntimeException("Please check the customer Id... No Such a customer");
+        }
+
     }
     @Override
     public void updateCustomer(CustomerDTO customer){
 
-        repo.save(mapper.map(customer,Customer.class));
+        if (repo.existsById(customer.getId())) {
+            repo.save(mapper.map(customer,Customer.class));
+        }else {
+            throw  new RuntimeException("Please check the customer Id... No Such a customer");
+        }
+
     }
     @Override
     public CustomerDTO searchCustomer(String id){
 
-        Customer customer = repo.findById(id).get();
-        return mapper.map(customer, CustomerDTO.class);
+        if (repo.existsById(id)) {
+            Customer customer = repo.findById(id).get();
+            return mapper.map(customer, CustomerDTO.class);
+        }else {
+            throw  new RuntimeException("Please check the customer Id... No Such a customer");
+        }
+
+
     }
     @Override
     public List<CustomerDTO> getAllCustomer(){
-
         List<Customer> all = repo.findAll();
        return mapper.map(all,new TypeToken<List<CustomerDTO>>(){}.getType());
     }

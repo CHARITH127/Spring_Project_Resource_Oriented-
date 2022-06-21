@@ -17,13 +17,13 @@ loadCustomer();
 $("#btn_AddCustomer").click(function () {
     var customerID = $("#CustomerID").val();
     var customerName = $("#CustomerName").val();
-    /*var customerAddress = $("#CustomerAddress").val();*/
+    var customerAddress = $("#CustomerAddress").val();
     var customerSalary = $("#CustomerSalary").val();
 
     let customer = {
         id: customerID,
         name: customerName,
-        /*address: customerAddress,*/
+        address: customerAddress,
         salary: customerSalary
     }
 
@@ -33,15 +33,10 @@ $("#btn_AddCustomer").click(function () {
         contentType: "application/json",
         data: JSON.stringify(customer),
         success:function (res) {
-            alert("Customer Add scuccessfully");
-            /*if (res.status == 200) {
+            if (res.code == 200) {
                 alert(res.message);
                 loadCustomer();
-            } else if (res.status == 400) {
-                alert(res.message);
-            } else {
-                alert(res.data);
-            }*/
+            }
         }
     });
     $("#btn_AddCustomer").attr("disabled", true);
@@ -51,14 +46,14 @@ function searchCustomer(){
     let customerID = $("#CustomerSearch").val();
 
     $.ajax({
-        url:"http://localhost:8080/JavaEEPOS/customer?option=SEARCH&custID="+customerID,
+        url:"http://localhost:8080/SpringWithMaven_war/customer?custID="+customerID,
         method:"GET",
         success:function (resp) {
-            console.log(resp.id+" "+resp.name+" "+resp.address+" "+resp.salary);
-            $("#searchCustomerID").val(resp.id);
-            $("#searchCustomerName").val(resp.name);
-            $("#searchCustomerAddress").val(resp.address);
-            $("#searchCustomerSalary").val(resp.salary);
+            console.log(resp.data.id);
+            $("#searchCustomerID").val(resp.data.id);
+            $("#searchCustomerName").val(resp.data.name);
+            $("#searchCustomerAddress").val(resp.data.address);
+            $("#searchCustomerSalary").val(resp.data.salary);
         }
     });
 }
@@ -71,13 +66,13 @@ $("#deleteCustomer").click(function () {
     searchCustomer();
     let custID = $("#CustomerSearch").val();
     $.ajax({
-        url:"http://localhost:8080/JavaEEPOS/customer?cutID="+custID,
+        url:"http://localhost:8080/SpringWithMaven_war/customer?custID="+custID,
         method:"DELETE",
         success:function (resp) {
-            if (resp.status == 200) {
+            if (resp.code == 200) {
                 alert(resp.message);
                 loadCustomer();
-            } else if (resp.status == 400) {
+            } else if (resp.code == 400) {
                 alert(resp.data);
             } else {
                 alert(resp.data);
@@ -103,15 +98,15 @@ $("#updateCustomer").click(function () {
     }
 
     $.ajax({
-        url:"http://localhost:8080/JavaEEPOS/customer",
+        url:"http://localhost:8080/SpringWithMaven_war/customer",
         method:"PUT",
         contentType: "application/json",
         data: JSON.stringify(updateCustomer),
         success:function (resp) {
-            if (resp.status == 200) { // process is  ok
+            if (resp.code == 200) { // process is  ok
                 alert(resp.message);
                 loadCustomer();
-            } else if (resp.status == 400) { // there is a problem with the client side
+            } else if (resp.code == 400) { // there is a problem with the client side
                 alert(resp.message);
             } else {
                 alert(resp.data); // else maybe there is an exception
