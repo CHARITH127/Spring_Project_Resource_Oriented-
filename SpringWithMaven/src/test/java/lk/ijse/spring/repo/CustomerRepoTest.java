@@ -26,7 +26,6 @@ class CustomerRepoTest {
 
     @Test
     public void saveCustomer() {
-
         customerRepo.save(new Customer("C001", "Dasun","Gampaha", 23000.00));
     }
 

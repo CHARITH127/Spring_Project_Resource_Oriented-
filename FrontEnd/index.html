@@ -344,29 +344,63 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <!--Customer id-->
                     <div class="customerID col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6">
-                        <div class="row ">
-                            <p>
-                                Customer ID
-                            </p>
+                        <div class="searchTextFeild container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="manageOrderCustomerId"
+                                               placeholder="Customer ID" disabled>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!--first row-->
                         <div class="searchTextFeild container">
                             <div class="row">
                                 <div class="col">
                                     <div class="mb-3">
-                                        <input type="text" class="form-control" id="manageOrderCustomerID"
-                                               placeholder="Input ItemName/Code Here">
+                                        <input type="text" class="form-control" id="manageOrderItemCode"
+                                               placeholder="ItemCode" disabled>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="searchTextFeild container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="mb-3">
+                                        <input type="text" class="form-control" id="manageOrderQty"
+                                               placeholder="Ordered Quantity">
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="orderMangeButtenBar container">
+                    <div class="row">
+                        <div class="container">
+                            <div class="col">
+                                <div class="searchButton float-start">
+                                    <button id="updateOrder" type="button" class="btn btn-primary">Update</button>
+                                </div>
+                                <div class="searchButton float-start">
+                                    <button id="clearAllFeillds" type="button" class="btn btn-primary">Clear All</button>
+                                </div>
+                                <div class="searchButton float-start">
+                                    <button id="deleteOrder" type="button" class="btn btn-danger">Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!--order manage table -->
                 <table class="manageOrderTable table ">
                     <thead>

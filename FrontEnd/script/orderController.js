@@ -8,10 +8,10 @@ $('#OrderDate').val(today);
 /*set order ID*/
 function setOrderID(){
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/orders?option=getOrderID",
+        url: "http://localhost:8080/SpringWithMaven_war/orders",
         method: "GET",
         success: function (resp) {
-            var oID = resp.id;
+            var oID = resp.data;
             $("#OrderID").val(oID);
         }
     });
@@ -26,14 +26,14 @@ $("#OrderCustomerId").keydown(function (event) {
         var oCustId = $("#OrderCustomerId").val();
 
         $.ajax({
-            url: "http://localhost:8080/JavaEEPOS/customer?option=SEARCH&custID=" + oCustId,
+            url: "http://localhost:8080/SpringWithMaven_war/customer?custID="+oCustId,
             method: "GET",
             success: function (resp) {
                 console.log(resp.id + " " + resp.name + " " + resp.address + " " + resp.salary);
-                $("#OrderCustomerId").val(resp.id);
-                $("#OrderCustomerName").val(resp.name);
-                $("#OrderCustomerAddress").val(resp.address);
-                $("#OrderCustomerSalary").val(resp.salary);
+                $("#OrderCustomerId").val(resp.data.id);
+                $("#OrderCustomerName").val(resp.data.name);
+                $("#OrderCustomerAddress").val(resp.data.address);
+                $("#OrderCustomerSalary").val(resp.data.salary);
             }
         });
     }
@@ -44,13 +44,13 @@ $("#OrderItemCode").keydown(function (event) {
     if (event.key == "Enter") {
         var itemCode = $("#OrderItemCode").val();
         $.ajax({
-            url: "http://localhost:8080/JavaEEPOS/item?option=SEARCH&itemCode=" + itemCode,
+            url: "http://localhost:8080/SpringWithMaven_war/item?id="+itemCode,
             method: "GET",
             success: function (res) {
-                $("#OrderItemCode").val(res.itemCode);
-                $("#OrderItemName").val(res.itemName);
-                $("#QtyOnHand").val(res.itemQty);
-                $("#OrderItemPrice").val(res.itemPrice);
+                $("#OrderItemCode").val(res.data.code);
+                $("#OrderItemName").val(res.data.name);
+                $("#QtyOnHand").val(res.data.qtyOnHand);
+                $("#OrderItemPrice").val(res.data.unitPrice);
             }
         });
         $("#OrderQuantity").focus();
@@ -85,6 +85,7 @@ $("#addToCart").click(function () {
 
 /*Add items to the cart*/
 let cartDB = new Array();
+let orderDetails = new Array();
 function addToCart() {
     let itemCode = $("#OrderItemCode").val();
     let itemName = $("#OrderItemName").val();
@@ -101,6 +102,16 @@ function addToCart() {
         total:total
     }
     cartDB.push(cartTm);
+
+    var orderID = $("#OrderID").val();
+
+    let details ={
+        oid:orderID,
+        itemCode:itemCode,
+        qty:qty,
+        totalPrice:total
+    }
+    orderDetails.push(details)
 }
 
 function loadAllDetailsToCart() {
@@ -233,29 +244,38 @@ function placeOrder() {
     var orderId =$("#OrderID").val();
    var date = $("#OrderDate").val();
    var customerID = $("#OrderCustomerId").val();
+   var customerName = $("#OrderCustomerName").val();
+   var customerAddress = $("#OrderCustomerAddress").val();
+   var customerSalary = $("#OrderCustomerSalary").val();
    var customerTotal =parseInt($("#subTotalNumber").text());
    var cart =cartDB
 
+    var customer={
+        id:customerID,
+        name:customerName,
+        address:customerAddress,
+        salary:customerSalary
+    }
+
    var orderObject ={
-       orderId:orderId,
-       orderDate:date,
-       customerId:customerID,
-       totalPrice:customerTotal,
-       cart:cart
+       oid:orderId,
+       date:date,
+       customer:customer,
+       orderDetails:orderDetails
     }
 
 
     $.ajax({
-        url: "http://localhost:8080/JavaEEPOS/orders",
+        url: "http://localhost:8080/SpringWithMaven_war/orders",
         method: "POST",
         contentType: "application/json",
         data: JSON.stringify(orderObject),
         success: function (resp) {
-            if (resp.status == 200) { // process is  ok
+            if (resp.code == 200) { // process is  ok
                 alert(resp.message);
                 setOrderID();
                 clearAllOrderPage();
-            } else if (resp.status == 400) { // there is a problem with the client side
+            } else if (resp.code == 400) { // there is a problem with the client side
                 alert(resp.message);
             } else {
                 alert(resp.data); // else maybe there is an exception
@@ -281,4 +301,5 @@ function clearAllOrderPage() {
     $("#Balance").val("");
     $(".cartTableBody").empty();
     cartDB.splice(0,cartDB.length);
+    orderDetails.splice(0,orderDetails.length);
 }

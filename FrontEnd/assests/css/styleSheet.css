@@ -65,6 +65,9 @@ section {
 .manageOrderTableBody{
     background-color: rgba(110, 215, 234, 0.69);
 }
+.orderMangeButtenBar{
+    margin-bottom: 3rem;
+}
 
 .footer {
     position: fixed;
