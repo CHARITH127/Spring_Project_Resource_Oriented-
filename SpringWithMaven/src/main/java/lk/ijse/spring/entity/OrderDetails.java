@@ -18,7 +18,7 @@ public class OrderDetails {
     @Id
     private String oid;
     @Id
-    private String itemCode;
+    private String code;
     private int qty;
     private double totalPrice;
 
@@ -27,7 +27,7 @@ public class OrderDetails {
     private Orders orders;
 
     @ManyToOne(cascade = {CascadeType.REFRESH,CascadeType.DETACH})
-    @JoinColumn(name = "itemCode",referencedColumnName = "code",insertable = false,updatable = false)
+    @JoinColumn(name = "code",referencedColumnName = "code",insertable = false,updatable = false)
     private Item item;
 
 }

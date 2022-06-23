@@ -51,15 +51,23 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public void searchOrder(String oid) {
-
+    public OrderDTO searchOrder(String oid) {
+        if (orderRepo.existsById(oid)) {
+            OrderDTO orderDTO = mapper.map(orderRepo.findById(oid).get(), OrderDTO.class);
+            return orderDTO;
+        }else {
+            throw new RuntimeException("Not such a order in this order if please check the orderID");
+        }
     }
 
     @Override
     public String genarateOrderId() {
         String s = orderRepo.genarateOrderID();
         String id;
-        if (!s.equals(null)) {
+        if (s==null) {
+            id = "O-001";
+            return id;
+        } else {
             int tempID = Integer.parseInt(s.split("-")[1]);
             tempID = tempID + 1;
             if (tempID < 9) {
@@ -72,10 +80,16 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                 id = "O-" + tempID;
                 return id;
             }
-        } else {
-            id = "O-001";
-            return id;
         }
 
+    }
+
+    @Override
+    public void deleteOrder(String oid){
+        if (orderRepo.existsById(oid)) {
+            orderRepo.deleteById(oid);
+        }else {
+            throw new RuntimeException("Not such a order in this order if please check the orderID");
+        }
     }
 }

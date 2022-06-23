@@ -2,13 +2,42 @@ $("#btnsearchOrder").click(function () {
     var OrderID = $("#searchOrder").val();
 
     $.ajax({
-        url:"http://localhost:8080/JavaEEPOS/orderDetails?oID="+OrderID,
+        url:"http://localhost:8080/SpringWithMaven_war/orders?oid="+OrderID,
         method:"GET",
         success:function (resp) {
+            var customerID = resp.data.customer.id;
+            $("#manageOrderCustomerId").val(customerID);
+
             $(".manageOrderTableBody").empty();
-            for (const rest of resp) {
-                var tableRow = `<tr><td>${rest.itemCode}</td><td>${rest.itemName}</td><td>${rest.itemPrice}</td><td>${rest.itemQty}</td><td>${rest.total}</td></tr>`;
+            let orderDetails = new Array();
+            orderDetails=resp.data.orderDetails;
+            for (let details of orderDetails) {
+                var tableRow = `<tr><td>${details.itemCode}</td><td>${details.qty}</td><td>${details.totalPrice}</td></tr>`;
                 $(".manageOrderTable").append(tableRow);
+            }
+
+            $(".manageOrderTableBody>tr").click(function (){
+               let itemCode = $(this).children().eq(0).text();
+               let itemqty = $(this).children().eq(1).text();
+
+               $("#manageOrderItemCode").val(itemCode);
+               $("#manageOrderQty").val(itemqty);
+
+            });
+
+        }
+
+    });
+});
+
+$("#deleteOrder").click(function () {
+    var OrderID = $("#searchOrder").val();
+    $.ajax({
+        url:"http://localhost:8080/SpringWithMaven_war/orders?oid="+OrderID,
+        method:"DELETE",
+        success:function (resp) {
+            if (resp.code == 200) {
+                alert(resp.message);
             }
         }
     });

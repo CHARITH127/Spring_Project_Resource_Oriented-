@@ -11,5 +11,5 @@ import java.io.Serializable;
 @Data
 public class OrderItem_PK implements Serializable {
     private String oid;
-    private String itemCode;
+    private String code;
 }

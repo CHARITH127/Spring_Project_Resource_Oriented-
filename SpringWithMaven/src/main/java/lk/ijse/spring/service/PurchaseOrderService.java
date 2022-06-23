@@ -4,6 +4,7 @@ import lk.ijse.spring.dto.OrderDTO;
 
 public interface PurchaseOrderService {
     void purchaseOrder(OrderDTO orderDTO);
-    void searchOrder(String oid);
+    OrderDTO searchOrder(String oid);
     String genarateOrderId();
+    void deleteOrder(String oid);
 }
