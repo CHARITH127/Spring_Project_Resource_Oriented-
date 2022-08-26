@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/FrontEnd/FrontEnd.iml" filepath="$PROJECT_DIR$/FrontEnd/FrontEnd.iml" />
       <module fileurl="file://$PROJECT_DIR$/POS_System/POS_System.iml" filepath="$PROJECT_DIR$/POS_System/POS_System.iml" />
       <module fileurl="file://$PROJECT_DIR$/SpringWithMaven/SpringWithMaven.iml" filepath="$PROJECT_DIR$/SpringWithMaven/SpringWithMaven.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Spring_MVC/Spring_MVC.iml" filepath="$PROJECT_DIR$/Spring_MVC/Spring_MVC.iml" />
     </modules>
   </component>
 </project>
